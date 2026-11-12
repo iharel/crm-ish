@@ -2,6 +2,9 @@
 
 AI-assisted, local-first CRM: leads, companies & deals (one deal per company, splittable), Gmail inbox (HTML mail with inline images and attachments) with AI-suggested replies grounded in company knowledge (RAG), Google Calendar scheduling, and email open/click/bounce tracking. Realtime updates over Socket.IO. Dark & light themes.
 
+## Why this exists
+I wanted to see whether I could ramp up a working CRM within a few hours. Up to now it has taken less than 8 hours of my time — from an empty folder to what you see below: leads, companies and deals, a Gmail inbox with AI-suggested replies, calendar scheduling and email tracking.
+
 ## Screenshots
 Taken from a local instance filled with fictional demo data.
 
