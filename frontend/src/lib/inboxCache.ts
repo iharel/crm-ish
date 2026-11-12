@@ -1,4 +1,4 @@
-/** inboxCache — the bounded caches behind fast thread switching (see docs/specs/2026-10-20_inbox-fast-switching_design.md). */
+/** inboxCache — the bounded caches behind fast thread switching. */
 import { createResourceCache } from './resourceCache'
 import type { Company, Draft, Lead, LeadStatus, Message, Thread } from '../types'
 

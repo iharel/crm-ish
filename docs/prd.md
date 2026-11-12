@@ -45,7 +45,6 @@ One local-first workspace where the team tracks leads/companies, reads and answe
 ## Milestones
 1. Design doc approval → 2. Mockups → 3. Auth + users + leads/companies → 4. Gmail sync/send → 5. Knowledge + RAG drafts → 6. Calendar + tracking → 7. Polish/themes/notifications.
 
-See `docs/specs/2026-10-17_crm_design.md` for architecture and data model.
 
 ## Inbox & Leads polish (2026-10-17)
 - Inbox threads: right-click context menu (Open, Reply, Archive/Unarchive, Create lead from sender, Link to lead, Delete from CRM). Delete is CRM-only; Gmail untouched.
@@ -101,13 +100,13 @@ See `docs/specs/2026-10-17_crm_design.md` for architecture and data model.
 - Text first: only the newest message's HTML is in the thread payload. Older messages load their HTML on expand (`GET /emails/messages/:id/html`) and show their text meanwhile.
 - Images and attachment thumbnails load lazily behind shimmers.
 - Responses are gzipped, and signed image urls are stable per hour so the browser cache hits.
-- Shimmer skeletons cover the list, reading pane, messages, draft panel and context card. See `specs/2026-10-20_inbox-fast-switching_design.md`.
+- Shimmer skeletons cover the list, reading pane, messages, draft panel and context card.
 
 ## Email signature (2026-10-20)
 - Per-user plain-text signature, edited in Settings → Signature with a live preview.
 - Toggles for new emails and for replies (replies include sent AI drafts).
 - Per-email on/off in compose.
-- Appended server-side at send time. No schema change (`settings` table). See `specs/2026-10-20_email-signature_design.md`.
+- Appended server-side at send time. No schema change (`settings` table).
 
 ## Inbox list sender (2026-10-20)
 - Each inbox row shows the sender of the **newest** message, not whoever started the thread. If you sent the newest message, the row shows "You".
@@ -119,8 +118,7 @@ See `docs/specs/2026-10-17_crm_design.md` for architecture and data model.
 - After a split, a lead can be in one or more deals; it shows once per deal in the Kanban and has one status per deal on its page.
 - Deals carry a name, status, owner, amount and expected close date.
 - Dashboard pipeline and win rate count deals (plus company-less leads), not individual leads.
-- Spec: `docs/specs/2026-11-12_deals_design.md`.
-- **Deals view (2026-11-12):** the Leads page has a `Leads | Deals` switch (Kanban and List). A deal is titled with the company name, plus the deal name when the company has several deals, and shows its **contact person** (one of its leads, chosen in the deal form; the first lead until chosen). Spec: `docs/specs/2026-11-12_deals-view_design.md`.
+- **Deals view (2026-11-12):** the Leads page has a `Leads | Deals` switch (Kanban and List). A deal is titled with the company name, plus the deal name when the company has several deals, and shows its **contact person** (one of its leads, chosen in the deal form; the first lead until chosen).
 
 ## Email rendering polish (2026-11-12)
 - **Image ratio:** images inside a mail body always keep their original ratio; inline width/height styles written by mail clients no longer squash an image narrowed to fit the reading pane.
@@ -132,7 +130,6 @@ See `docs/specs/2026-10-17_crm_design.md` for architecture and data model.
 - Supplier contacts are ordinary people records. Those in no deal are **hidden from the Leads pipeline, the Deals view and dashboard pipeline numbers**; they show on the supplier's page, their own page and the Inbox.
 - Set a supplier from: the company form (Supplier switch), the company page / Companies right-click menu, or the Inbox ("Set as supplier" on a thread — flags or creates the company by email domain; a free-mail sender asks for the company).
 - AI reply drafts are told when the counterpart is a supplier so they do not pitch.
-- Design: `docs/specs/2026-11-12_suppliers_design.md`.
 
 
 ## Archived mail and imports (2026-11-12)

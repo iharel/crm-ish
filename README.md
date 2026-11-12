@@ -19,7 +19,7 @@ Taken from a local instance filled with fictional demo data.
 ```
 frontend/   React 19 + Vite + TypeScript + Tailwind v4 (+ socket.io-client)
 backend/    Node 22 + Express + Socket.IO + SQLite (node-sqlite3-wasm) + googleapis + Anthropic SDK
-docs/       prd.md, specs/*design.md, specs/*implementation.md
+docs/       prd.md, screenshots/
 ```
 
 ## Quick start
