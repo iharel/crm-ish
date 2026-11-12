@@ -1,0 +1,986 @@
+{
+  "version": "1",
+  "generatedAt": "2026-10-23T12:55:12.532Z",
+  "repoName": "looper-crm",
+  "models": [
+    {
+      "name": "_migrations",
+      "columns": [
+        {
+          "name": "name",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "applied_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "email",
+          "type": "text"
+        },
+        {
+          "name": "password_hash",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "role",
+          "type": "text"
+        },
+        {
+          "name": "avatar_url",
+          "type": "text"
+        },
+        {
+          "name": "scheduling_link",
+          "type": "text"
+        },
+        {
+          "name": "timezone",
+          "type": "text"
+        },
+        {
+          "name": "working_hours_start",
+          "type": "text"
+        },
+        {
+          "name": "working_hours_end",
+          "type": "text"
+        },
+        {
+          "name": "is_active",
+          "type": "integer"
+        },
+        {
+          "name": "must_change_password",
+          "type": "integer"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "refresh_tokens",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "token_hash",
+          "type": "text"
+        },
+        {
+          "name": "expires_at",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "google_oauth_config",
+      "columns": [
+        {
+          "name": "id",
+          "type": "integer",
+          "pk": true
+        },
+        {
+          "name": "client_id",
+          "type": "text"
+        },
+        {
+          "name": "client_secret_enc",
+          "type": "text"
+        },
+        {
+          "name": "redirect_uri",
+          "type": "text"
+        },
+        {
+          "name": "pubsub_topic",
+          "type": "text"
+        },
+        {
+          "name": "updated_by",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "google_accounts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "email",
+          "type": "text"
+        },
+        {
+          "name": "access_token_enc",
+          "type": "text"
+        },
+        {
+          "name": "refresh_token_enc",
+          "type": "text"
+        },
+        {
+          "name": "expiry",
+          "type": "text"
+        },
+        {
+          "name": "scopes",
+          "type": "text"
+        },
+        {
+          "name": "history_id",
+          "type": "text"
+        },
+        {
+          "name": "watch_expiry",
+          "type": "text"
+        },
+        {
+          "name": "calendar_id",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "last_sync_at",
+          "type": "text"
+        },
+        {
+          "name": "last_error",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "lead_statuses",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "color",
+          "type": "text"
+        },
+        {
+          "name": "sort_order",
+          "type": "integer"
+        },
+        {
+          "name": "is_won",
+          "type": "integer"
+        },
+        {
+          "name": "is_lost",
+          "type": "integer"
+        },
+        {
+          "name": "is_default",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "name": "companies",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "domain",
+          "type": "text"
+        },
+        {
+          "name": "website",
+          "type": "text"
+        },
+        {
+          "name": "industry",
+          "type": "text"
+        },
+        {
+          "name": "size",
+          "type": "text"
+        },
+        {
+          "name": "location",
+          "type": "text"
+        },
+        {
+          "name": "description",
+          "type": "text"
+        },
+        {
+          "name": "logo_url",
+          "type": "text"
+        },
+        {
+          "name": "linkedin_url",
+          "type": "text"
+        },
+        {
+          "name": "enrichment_json",
+          "type": "text"
+        },
+        {
+          "name": "enriched_at",
+          "type": "text"
+        },
+        {
+          "name": "owner_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "company_domains",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "company_id",
+          "type": "text",
+          "fk": "companies.id"
+        },
+        {
+          "name": "domain",
+          "type": "text"
+        },
+        {
+          "name": "is_primary",
+          "type": "integer"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "leads",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "first_name",
+          "type": "text"
+        },
+        {
+          "name": "last_name",
+          "type": "text"
+        },
+        {
+          "name": "email",
+          "type": "text"
+        },
+        {
+          "name": "phone",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "company_id",
+          "type": "text",
+          "fk": "companies.id"
+        },
+        {
+          "name": "status_id",
+          "type": "text",
+          "fk": "lead_statuses.id"
+        },
+        {
+          "name": "owner_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "source",
+          "type": "text"
+        },
+        {
+          "name": "score",
+          "type": "integer"
+        },
+        {
+          "name": "linkedin_url",
+          "type": "text"
+        },
+        {
+          "name": "notes",
+          "type": "text"
+        },
+        {
+          "name": "enrichment_json",
+          "type": "text"
+        },
+        {
+          "name": "enriched_at",
+          "type": "text"
+        },
+        {
+          "name": "last_activity_at",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        },
+        {
+          "name": "archived_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "lead_activities",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "lead_id",
+          "type": "text",
+          "fk": "leads.id"
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "payload_json",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "email_threads",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "google_account_id",
+          "type": "text",
+          "fk": "google_accounts.id"
+        },
+        {
+          "name": "gmail_thread_id",
+          "type": "text"
+        },
+        {
+          "name": "subject",
+          "type": "text"
+        },
+        {
+          "name": "snippet",
+          "type": "text"
+        },
+        {
+          "name": "lead_id",
+          "type": "text",
+          "fk": "leads.id"
+        },
+        {
+          "name": "company_id",
+          "type": "text",
+          "fk": "companies.id"
+        },
+        {
+          "name": "last_message_at",
+          "type": "text"
+        },
+        {
+          "name": "unread",
+          "type": "integer"
+        },
+        {
+          "name": "archived",
+          "type": "integer"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "email_messages",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "thread_id",
+          "type": "text",
+          "fk": "email_threads.id"
+        },
+        {
+          "name": "gmail_message_id",
+          "type": "text"
+        },
+        {
+          "name": "direction",
+          "type": "text"
+        },
+        {
+          "name": "from_addr",
+          "type": "text"
+        },
+        {
+          "name": "to_json",
+          "type": "text"
+        },
+        {
+          "name": "cc_json",
+          "type": "text"
+        },
+        {
+          "name": "bcc_json",
+          "type": "text"
+        },
+        {
+          "name": "subject",
+          "type": "text"
+        },
+        {
+          "name": "body_text",
+          "type": "text"
+        },
+        {
+          "name": "body_html",
+          "type": "text"
+        },
+        {
+          "name": "sent_at",
+          "type": "text"
+        },
+        {
+          "name": "tracking_token",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "attachments_scanned",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "name": "email_attachments",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "message_id",
+          "type": "text",
+          "fk": "email_messages.id"
+        },
+        {
+          "name": "gmail_attachment_id",
+          "type": "text"
+        },
+        {
+          "name": "filename",
+          "type": "text"
+        },
+        {
+          "name": "mime",
+          "type": "text"
+        },
+        {
+          "name": "size",
+          "type": "integer"
+        },
+        {
+          "name": "content_id",
+          "type": "text"
+        },
+        {
+          "name": "is_inline",
+          "type": "integer"
+        },
+        {
+          "name": "file_path",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "email_events",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "message_id",
+          "type": "text",
+          "fk": "email_messages.id"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "ip",
+          "type": "text"
+        },
+        {
+          "name": "user_agent",
+          "type": "text"
+        },
+        {
+          "name": "url",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "email_drafts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "thread_id",
+          "type": "text",
+          "fk": "email_threads.id"
+        },
+        {
+          "name": "lead_id",
+          "type": "text",
+          "fk": "leads.id"
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "kind",
+          "type": "text"
+        },
+        {
+          "name": "subject",
+          "type": "text"
+        },
+        {
+          "name": "body_html",
+          "type": "text"
+        },
+        {
+          "name": "body_text",
+          "type": "text"
+        },
+        {
+          "name": "citations_json",
+          "type": "text"
+        },
+        {
+          "name": "slots_json",
+          "type": "text"
+        },
+        {
+          "name": "model",
+          "type": "text"
+        },
+        {
+          "name": "confidence",
+          "type": "real"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "knowledge_sources",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "url",
+          "type": "text"
+        },
+        {
+          "name": "file_path",
+          "type": "text"
+        },
+        {
+          "name": "mime",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "error",
+          "type": "text"
+        },
+        {
+          "name": "chunk_count",
+          "type": "integer"
+        },
+        {
+          "name": "created_by",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "knowledge_chunks",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "source_id",
+          "type": "text",
+          "fk": "knowledge_sources.id"
+        },
+        {
+          "name": "chunk_index",
+          "type": "integer"
+        },
+        {
+          "name": "content",
+          "type": "text"
+        },
+        {
+          "name": "token_count",
+          "type": "integer"
+        },
+        {
+          "name": "metadata_json",
+          "type": "text"
+        },
+        {
+          "name": "embedding",
+          "type": "blob"
+        }
+      ]
+    },
+    {
+      "name": "meetings",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "lead_id",
+          "type": "text",
+          "fk": "leads.id"
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "google_event_id",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "starts_at",
+          "type": "text"
+        },
+        {
+          "name": "ends_at",
+          "type": "text"
+        },
+        {
+          "name": "meet_link",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "notifications",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "user_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "body",
+          "type": "text"
+        },
+        {
+          "name": "link",
+          "type": "text"
+        },
+        {
+          "name": "read_at",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "columns": [
+        {
+          "name": "key",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "value_json",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "tasks",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "pk": true
+        },
+        {
+          "name": "title",
+          "type": "text"
+        },
+        {
+          "name": "summary",
+          "type": "text"
+        },
+        {
+          "name": "status",
+          "type": "text"
+        },
+        {
+          "name": "due_at",
+          "type": "text"
+        },
+        {
+          "name": "assignee_id",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "created_by",
+          "type": "text",
+          "fk": "users.id"
+        },
+        {
+          "name": "thread_id",
+          "type": "text",
+          "fk": "email_threads.id"
+        },
+        {
+          "name": "lead_id",
+          "type": "text",
+          "fk": "leads.id"
+        },
+        {
+          "name": "company_id",
+          "type": "text",
+          "fk": "companies.id"
+        },
+        {
+          "name": "completed_at",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "text"
+        },
+        {
+          "name": "updated_at",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}

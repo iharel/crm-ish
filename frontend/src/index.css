@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Heebo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------- Looper CRM tokens — "Cyber Bloom" (teal → pink over indigo) ---------- */
+:root {
+  --radius: 0.875rem;
+  --bg: oklch(0.965 0.008 270);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.955 0.01 275);
+  --surface-3: oklch(0.925 0.012 275);
+  --border: oklch(0.9 0.01 280);
+  --border-strong: oklch(0.82 0.015 280);
+  --fg: oklch(0.2 0.03 270);
+  --fg-muted: oklch(0.5 0.03 280);
+  --fg-subtle: oklch(0.62 0.025 280);
+  --primary: oklch(0.55 0.12 200);
+  --primary-hover: oklch(0.48 0.12 200);
+  --on-primary: oklch(0.99 0 0);
+  --accent: oklch(0.62 0.2 340);
+  --success: oklch(0.62 0.14 165);
+  --warning: oklch(0.72 0.16 75);
+  --danger: oklch(0.6 0.22 25);
+  --info: oklch(0.6 0.14 240);
+  --ring: oklch(0.55 0.12 200);
+  --sidebar: oklch(0.975 0.006 275);
+  --gradient-brand: linear-gradient(135deg, oklch(0.6 0.15 200), oklch(0.68 0.22 340));
+  --gradient-glow: radial-gradient(circle at 20% 15%, oklch(0.75 0.12 200 / 0.28), transparent 45%), radial-gradient(circle at 85% 70%, oklch(0.78 0.16 340 / 0.22), transparent 45%);
+  --shadow: 0 1px 2px oklch(0.2 0.05 280 / 0.06), 0 4px 16px -8px oklch(0.2 0.05 280 / 0.12);
+  --shadow-lg: 0 12px 40px -12px oklch(0.2 0.05 280 / 0.25);
+  --shadow-glow: 0 0 24px oklch(0.68 0.22 340 / 0.3), inset 0 1px 1px oklch(1 0 0 / 0.4);
+  --shimmer-highlight: oklch(1 0 0 / 0.65);
+}
+
+[data-theme="dark"] {
+  --shimmer-highlight: oklch(1 0 0 / 0.07);
+  --bg: oklch(0.11 0.02 270);
+  --surface: oklch(0.155 0.028 270);
+  --surface-2: oklch(0.19 0.028 270);
+  --surface-3: oklch(0.235 0.03 270);
+  --border: oklch(1 0 0 / 9%);
+  --border-strong: oklch(1 0 0 / 16%);
+  --fg: oklch(0.96 0.01 280);
+  --fg-muted: oklch(0.7 0.03 280);
+  --fg-subtle: oklch(0.55 0.03 280);
+  --primary: oklch(0.8 0.1 200);
+  --primary-hover: oklch(0.86 0.1 200);
+  --on-primary: oklch(0.14 0.03 270);
+  --accent: oklch(0.72 0.2 340);
+  --success: oklch(0.78 0.14 165);
+  --warning: oklch(0.82 0.16 80);
+  --danger: oklch(0.7 0.2 25);
+  --info: oklch(0.75 0.12 240);
+  --ring: oklch(0.8 0.1 200);
+  --sidebar: oklch(0.125 0.022 270);
+  --gradient-brand: linear-gradient(135deg, oklch(0.62 0.15 200), oklch(0.7 0.24 340));
+  --gradient-glow: radial-gradient(circle at 20% 10%, oklch(0.4 0.12 200 / 0.35), transparent 45%), radial-gradient(circle at 85% 60%, oklch(0.42 0.18 340 / 0.3), transparent 45%);
+  --shadow: 0 1px 2px oklch(0 0 0 / 0.5);
+  --shadow-lg: 0 16px 48px -12px oklch(0 0 0 / 0.8);
+  --shadow-glow: 0 0 28px oklch(0.7 0.24 340 / 0.35), inset 0 1px 1px oklch(1 0 0 / 0.25);
+}
+
+/* Per-section glow positions */
+[data-section="dashboard"] { --gradient-glow: radial-gradient(circle at 25% 20%, oklch(0.5 0.12 200 / 0.3), transparent 45%), radial-gradient(circle at 80% 75%, oklch(0.45 0.18 340 / 0.26), transparent 45%); }
+[data-section="leads"] { --gradient-glow: radial-gradient(circle at 75% 15%, oklch(0.45 0.18 340 / 0.28), transparent 45%), radial-gradient(circle at 15% 80%, oklch(0.5 0.12 200 / 0.24), transparent 45%); }
+[data-section="inbox"] { --gradient-glow: radial-gradient(circle at 50% 85%, oklch(0.5 0.12 200 / 0.28), transparent 45%), radial-gradient(circle at 85% 20%, oklch(0.45 0.18 340 / 0.22), transparent 45%); }
+[data-section="companies"] { --gradient-glow: radial-gradient(circle at 15% 30%, oklch(0.45 0.18 340 / 0.26), transparent 45%), radial-gradient(circle at 85% 75%, oklch(0.5 0.12 200 / 0.24), transparent 45%); }
+[data-section="knowledge"] { --gradient-glow: radial-gradient(circle at 65% 25%, oklch(0.5 0.12 200 / 0.28), transparent 45%), radial-gradient(circle at 20% 80%, oklch(0.45 0.18 340 / 0.22), transparent 45%); }
+[data-section="calendar"] { --gradient-glow: radial-gradient(circle at 80% 70%, oklch(0.45 0.18 340 / 0.28), transparent 45%), radial-gradient(circle at 25% 25%, oklch(0.5 0.12 200 / 0.22), transparent 45%); }
+[data-section="admin"], [data-section="settings"] { --gradient-glow: radial-gradient(circle at 70% 60%, oklch(0.5 0.1 200 / 0.24), transparent 45%), radial-gradient(circle at 25% 25%, oklch(0.42 0.14 340 / 0.2), transparent 45%); }
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-sidebar: var(--sidebar);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-ring: var(--ring);
+  --font-sans: "Inter", "Heebo", ui-sans-serif, system-ui, sans-serif; /* Heebo supplies Hebrew glyphs; Inter has none */
+  --font-heading: "Space Grotesk", "Heebo", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+html, body, #root { height: 100%; width: 100%; }
+body {
+  @apply bg-bg text-fg font-sans antialiased;
+  font-size: 14px;
+  font-feature-settings: "cv11", "ss01";
+  position: relative;
+  isolation: isolate;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+/* Grid net */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.05;
+  background-image: linear-gradient(to right, var(--fg) 1px, transparent 1px), linear-gradient(to bottom, var(--fg) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+/* Section glow */
+body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: var(--gradient-glow); filter: blur(60px); }
+/* Only the app root — portaled overlays (ContextMenu) rely on their own position: fixed. */
+body > #root { position: relative; z-index: 1; }
+
+h1, h2, h3, h4 { font-family: var(--font-heading); letter-spacing: -0.02em; }
+* { border-color: var(--border); }
+button, [role="button"], a, label:has(input[type="checkbox"]) { cursor: pointer; }
+/* Bidi: the chrome is English/LTR; user content (names, subjects, bodies, notes) carries dir="auto" so Hebrew text flows RTL and aligns to its start edge. */
+[dir="auto"]:not(.email-html, .email-html *) { unicode-bidi: plaintext; text-align: left; }
+/* Multi-line bodies (message text, notes, textareas) align to their own start edge and let each paragraph pick its direction;
+   single-line labels stay anchored to the LTR layout's left edge, as Gmail does. */
+.bidi-plain, pre[dir="auto"], textarea[dir="auto"] { unicode-bidi: plaintext; text-align: start; }
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@layer utilities {
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .card-frame { border: 1px solid var(--border); border-radius: calc(var(--radius) + 8px); background: transparent; }
+  .bg-brand-gradient { background-image: var(--gradient-brand); }
+  .text-brand-gradient { background-image: var(--gradient-brand); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .glow { box-shadow: var(--shadow-glow); }
+  .shadow-elevated { box-shadow: var(--shadow-lg); }
+  .animate-fade-in { animation: fadeIn 240ms ease-out both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .shimmer { background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.08), transparent); background-size: 200% 100%; animation: shimmer 1.6s infinite; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  /* Skeleton block: theme-aware base with a shimmer sweep (see components/ui/Skeleton). */
+  .skeleton { background-color: var(--surface-3); background-image: linear-gradient(90deg, transparent 0%, var(--shimmer-highlight) 50%, transparent 100%); background-size: 200% 100%; background-repeat: no-repeat; animation: shimmer 1.4s ease-in-out infinite; }
+}
+
+/* Email HTML bodies: sanitized server-side, rendered in a scoped block that cannot escape its card. */
+/* Direction follows the content: the body aligns to its own start edge, and every block inside gets dir="auto" (HtmlBody)
+   so a Hebrew paragraph in an English mail still flows and aligns RTL. No text-align is forced on the blocks, so the
+   mail's own centering (align attributes, inline styles) is kept. */
+/* position/isolation/contain keep whatever a mail positions or stacks inside its own box: it can never cover app UI. */
+.email-html { position: relative; isolation: isolate; contain: paint; overflow-wrap: anywhere; word-break: break-word; max-width: 100%; overflow-x: auto; font-size: 0.875rem; line-height: 1.6; text-align: start; }
+/* Images keep their original ratio: !important is needed to beat the inline width/height styles mail clients write,
+   which otherwise squash an image once max-width narrows it. */
+.email-html img { max-width: 100% !important; height: auto !important; object-fit: contain; }
+.email-html table { max-width: 100%; border-collapse: collapse; }
+.email-html a { color: var(--primary); text-decoration: underline; }
+.email-html blockquote { border-inline-start: 2px solid var(--border); margin-inline: 0; padding-inline-start: 0.75rem; color: var(--fg-muted); }
+.email-html p { margin: 0 0 0.5em; }
+.email-html img.email-img.is-loading { min-width: 96px; min-height: 64px; border-radius: 6px; background-color: var(--surface-3); background-image: linear-gradient(90deg, transparent 0%, var(--shimmer-highlight) 50%, transparent 100%); background-size: 200% 100%; background-repeat: no-repeat; animation: shimmer 1.4s ease-in-out infinite; }
+.email-html .email-remote-img { outline: 1px dashed var(--border); min-width: 16px; min-height: 16px; }
