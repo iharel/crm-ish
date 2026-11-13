@@ -5,6 +5,8 @@ AI-assisted, local-first CRM: leads, companies and deals, a Gmail inbox with AI-
 ## Why this exists
 I wanted to see whether I could ramp up a working CRM within a few hours. Up to now it has taken less than 8 hours of my time — from an empty folder to what you see below.
 
+Built with [Looper](https://looper.ing), an AI-powered IDE for working on real codebases.
+
 ## Screenshots
 Taken from a local instance filled with fictional demo data.
 
