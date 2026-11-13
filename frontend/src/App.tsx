@@ -13,6 +13,9 @@ const InboxPage = lazy(() => import('./pages/InboxPage'))
 const KnowledgePage = lazy(() => import('./pages/KnowledgePage'))
 const CalendarPage = lazy(() => import('./pages/CalendarPage'))
 const TasksPage = lazy(() => import('./pages/TasksPage'))
+const DocumentsPage = lazy(() => import('./pages/DocumentsPage'))
+const SignRequestPage = lazy(() => import('./pages/SignRequestPage'))
+const SignPage = lazy(() => import('./pages/SignPage'))
 const TrackingPage = lazy(() => import('./pages/TrackingPage'))
 const NotificationsPage = lazy(() => import('./pages/NotificationsPage'))
 const AdminUsersPage = lazy(() => import('./pages/AdminUsersPage'))
@@ -60,6 +63,10 @@ export default function App() {
         <Route path="/knowledge" element={<Protected><KnowledgePage /></Protected>} />
         <Route path="/calendar" element={<Protected><CalendarPage /></Protected>} />
         <Route path="/tasks" element={<Protected><TasksPage /></Protected>} />
+        <Route path="/documents" element={<Protected><DocumentsPage /></Protected>} />
+        <Route path="/documents/:id" element={<Protected><SignRequestPage /></Protected>} />
+        {/* Public: a recipient signs through their private link, no login. */}
+        <Route path="/sign/:token" element={<SignPage />} />
         <Route path="/tracking" element={<Protected><TrackingPage /></Protected>} />
         <Route path="/notifications" element={<Protected><NotificationsPage /></Protected>} />
         <Route path="/settings" element={<Protected><SettingsPage /></Protected>} />

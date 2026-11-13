@@ -29,3 +29,17 @@ export interface TaskRow { id: string; title: string; summary: string | null; st
 export interface NotificationRow { id: string; user_id: string; type: string; title: string; body: string | null; link: string | null; read_at: string | null; created_at: string }
 
 export interface Citation { sourceId: string; sourceTitle: string; snippet: string; score: number }
+
+// ---- document signing
+export type SignRequestStatus = 'draft' | 'sent' | 'completed' | 'declined' | 'voided' | 'expired'
+export type SignRecipientRole = 'signer' | 'copy'
+export type SignRecipientStatus = 'pending' | 'sent' | 'opened' | 'signed' | 'declined'
+export type SignFieldType = 'signature' | 'initials' | 'name' | 'date' | 'text' | 'checkbox'
+/** One signing request: 1+ PDFs, 1+ recipients, the fields, the message and the reminder settings. `is_template` = reusable blueprint, never sent. */
+export interface SignRequestRow { id: string; owner_id: string; company_id: string | null; deal_id: string | null; thread_id: string | null; title: string; message: string | null; status: SignRequestStatus; is_template: number; sequential: number; require_code: number; remind_after_days: number | null; remind_every_days: number | null; remind_max: number | null; expires_at: string | null; signed_file_path: string | null; signed_sha256: string | null; void_reason: string | null; sent_at: string | null; completed_at: string | null; created_at: string; updated_at: string }
+export interface SignDocumentRow { id: string; request_id: string; filename: string; file_path: string; sha256: string; page_count: number; size: number; sort_order: number }
+/** `token_hash` is the SHA-256 of the recipient's link secret; the secret itself is derived, never stored. */
+export interface SignRecipientRow { id: string; request_id: string; role: SignRecipientRole; name: string; email: string; lead_id: string | null; user_id: string | null; sort_order: number; token_hash: string; status: SignRecipientStatus; decline_reason: string | null; reminders_sent: number; last_reminded_at: string | null; consented_at: string | null; signed_at: string | null; signed_ip: string | null; signed_user_agent: string | null }
+/** A rectangle on one page; x/y/w/h are fractions of the displayed page, origin top-left. `value` is text, 'true' for a ticked box, or a PNG path for drawn signatures. */
+export interface SignFieldRow { id: string; request_id: string; document_id: string; recipient_id: string; type: SignFieldType; page: number; x: number; y: number; w: number; h: number; required: number; label: string | null; value: string | null; filled_at: string | null }
+export interface SignEventRow { id: string; request_id: string; recipient_id: string | null; type: string; ip: string | null; user_agent: string | null; meta_json: string | null; created_at: string }

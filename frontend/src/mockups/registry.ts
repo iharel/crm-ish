@@ -5,7 +5,7 @@ export interface MockupEntry {
   name: string
   title: string
   description: string
-  group: 'Auth' | 'Leads' | 'Companies' | 'Email' | 'Knowledge' | 'Calendar' | 'Admin' | 'System'
+  group: 'Auth' | 'Leads' | 'Companies' | 'Email' | 'Knowledge' | 'Calendar' | 'Documents' | 'Admin' | 'System'
   component: LazyExoticComponent<ComponentType>
 }
 
@@ -25,6 +25,10 @@ export const mockups: MockupEntry[] = [
   { name: 'tracking', title: 'Email tracking', description: 'Open/click/bounce analytics.', group: 'Email', component: lazy(() => import('./pages/TrackingMockup')) },
   { name: 'knowledge', title: 'Company knowledge', description: 'Documents & websites for RAG.', group: 'Knowledge', component: lazy(() => import('./pages/KnowledgeMockup')) },
   { name: 'calendar', title: 'Calendar & scheduling', description: 'Scheduling link, Google Calendar, meetings.', group: 'Calendar', component: lazy(() => import('./pages/CalendarMockup')) },
+  { name: 'signing-documents', title: 'Documents — signing requests', description: 'Every signing request by status, plus templates.', group: 'Documents', component: lazy(() => import('./pages/SigningDocumentsMockup')) },
+  { name: 'signing-builder', title: 'Signing request builder', description: 'Files, recipients, fields placed on the pages, reminders — then Send.', group: 'Documents', component: lazy(() => import('./pages/SigningBuilderMockup')) },
+  { name: 'signing-status', title: 'Signing request status', description: 'Who signed, reminders, private links, files and the activity record.', group: 'Documents', component: lazy(() => import('./pages/SigningStatusMockup')) },
+  { name: 'signing-sign', title: 'Signer page', description: 'What a recipient sees through their private link: fields to fill, Finish and sign.', group: 'Documents', component: lazy(() => import('./pages/SigningSignMockup')) },
   { name: 'admin-users', title: 'Admin — Users', description: 'User CRUD and roles.', group: 'Admin', component: lazy(() => import('./pages/AdminUsersMockup')) },
   { name: 'admin-integrations', title: 'Admin — Integrations', description: 'Google OAuth client, LLM keys, connected accounts.', group: 'Admin', component: lazy(() => import('./pages/AdminIntegrationsMockup')) },
   { name: 'settings-statuses', title: 'Settings — Lead statuses', description: 'Configure pipeline stages.', group: 'Admin', component: lazy(() => import('./pages/SettingsStatusesMockup')) },

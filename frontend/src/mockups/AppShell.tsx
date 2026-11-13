@@ -1,9 +1,9 @@
 import { ResizeHandle } from '../components/common/ResizeHandle'
 import type { ReactNode } from 'react'
-import { Bell, Building2, Calendar, LayoutDashboard, Inbox, BookOpen, Search, Settings, Users, Plug, Kanban, Plus } from 'lucide-react'
+import { Bell, Building2, Calendar, LayoutDashboard, Inbox, BookOpen, Search, Settings, Users, Plug, Kanban, Plus, FileSignature } from 'lucide-react'
 import { Avatar, Button, cn } from '../components/ui'
 
-export type NavKey = 'dashboard' | 'leads' | 'companies' | 'inbox' | 'knowledge' | 'calendar' | 'users' | 'integrations' | 'settings'
+export type NavKey = 'dashboard' | 'leads' | 'companies' | 'inbox' | 'documents' | 'knowledge' | 'calendar' | 'users' | 'integrations' | 'settings'
 
 export interface AppShellProps {
   active: NavKey
@@ -19,6 +19,7 @@ const nav: Array<{ key: NavKey; label: string; icon: ReactNode; section?: string
   { key: 'leads', label: 'Leads', icon: <Kanban size={16} /> },
   { key: 'companies', label: 'Companies', icon: <Building2 size={16} /> },
   { key: 'inbox', label: 'Inbox', icon: <Inbox size={16} />, badge: 2 },
+  { key: 'documents', label: 'Documents', icon: <FileSignature size={16} /> },
   { key: 'knowledge', label: 'Knowledge', icon: <BookOpen size={16} /> },
   { key: 'calendar', label: 'Calendar', icon: <Calendar size={16} /> },
   { key: 'users', label: 'Users', icon: <Users size={16} />, section: 'Admin' },

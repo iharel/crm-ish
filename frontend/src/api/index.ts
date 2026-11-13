@@ -1,7 +1,7 @@
 /** api — per-domain API modules over the common http layer. Errors become ApiError. */
 import { http } from '../http/httpClient'
 import { call } from './apiError'
-import type { BuildInfo, Signature, CompanySuggestion, AiSettings, Activity, Citation, Company, CompanyInput, Dashboard, Deal, DealInput, DealListItem, Draft, GoogleAccount, GoogleConfig, ImportResult, KnowledgeSource, Lead, LeadInput, Task, TaskInput, LeadStatus, Meeting, Message, Notification, Slot, Thread, TrackingOverview, User } from '../types'
+import type { SignRequest, SignRequestDetail, SignRecipientInput, SignFieldInput, SignRequestInput, SignSuggestion, SignLink, SignerView, BuildInfo, Signature, CompanySuggestion, AiSettings, Activity, Citation, Company, CompanyInput, Dashboard, Deal, DealInput, DealListItem, Draft, GoogleAccount, GoogleConfig, ImportResult, KnowledgeSource, Lead, LeadInput, Task, TaskInput, LeadStatus, Meeting, Message, Notification, Slot, Thread, TrackingOverview, User } from '../types'
 
 export const authApi = {
   login: (email: string, password: string) => call(() => http.post<{ accessToken: string; user: User }>('/auth/login', { email, password })),
@@ -130,4 +130,39 @@ export const settingsApi = {
   saveAi: (d: { anthropicApiKey?: string; voyageApiKey?: string; draftModel?: string; enrichModel?: string }) => call(() => http.put<AiSettings>('/settings/ai', d)),
   workspace: () => call(() => http.get<{ autoCreateLeads: boolean; autoDraftReplies: boolean }>('/settings/workspace')),
   saveWorkspace: (d: { autoCreateLeads?: boolean; autoDraftReplies?: boolean }) => call(() => http.put<{ autoCreateLeads: boolean; autoDraftReplies: boolean }>('/settings/workspace', d)),
+}
+
+/** signingApi — document signing, owner side (the caller's own requests; admins see everyone's). */
+export const signingApi = {
+  list: (f: { companyId?: string; template?: boolean } = {}) => call(() => http.get<SignRequest[]>(`/signing/requests${qs({ companyId: f.companyId, template: f.template ? 'true' : undefined })}`)),
+  get: (id: string) => call(() => http.get<SignRequestDetail>(`/signing/requests/${id}`)),
+  create: (d: { title: string; companyId?: string | null; dealId?: string | null; threadId?: string | null; isTemplate?: boolean }) => call(() => http.post<SignRequestDetail>('/signing/requests', d)),
+  update: (id: string, d: SignRequestInput) => call(() => http.patch<SignRequestDetail>(`/signing/requests/${id}`, d)),
+  remove: (id: string) => call(() => http.delete<{ ok: true }>(`/signing/requests/${id}`)),
+  upload: (id: string, files: File[]) => { const form = new FormData(); files.forEach((f) => form.append('files', f)); return call(() => http.upload<SignRequestDetail & { rejected: { filename: string; reason: string }[] }>(`/signing/requests/${id}/documents`, form)) },
+  removeDocument: (id: string, docId: string) => call(() => http.delete<SignRequestDetail>(`/signing/requests/${id}/documents/${docId}`)),
+  reorderDocuments: (id: string, ids: string[]) => call(() => http.post<SignRequestDetail>(`/signing/requests/${id}/documents/reorder`, { ids })),
+  documentBytes: (id: string, docId: string) => call(() => http.bytes(`/signing/requests/${id}/documents/${docId}/file`)),
+  setRecipients: (id: string, recipients: SignRecipientInput[]) => call(() => http.put<SignRequestDetail>(`/signing/requests/${id}/recipients`, { recipients })),
+  setFields: (id: string, fields: SignFieldInput[]) => call(() => http.put<SignRequestDetail>(`/signing/requests/${id}/fields`, { fields })),
+  send: (id: string) => call(() => http.post<SignRequestDetail & { emailed: boolean; links: SignLink[] }>(`/signing/requests/${id}/send`)),
+  void: (id: string, reason: string | null) => call(() => http.post<SignRequestDetail>(`/signing/requests/${id}/void`, { reason })),
+  duplicate: (id: string, d: { asTemplate?: boolean; title?: string; companyId?: string | null } = {}) => call(() => http.post<SignRequestDetail>(`/signing/requests/${id}/duplicate`, d)),
+  remind: (id: string, recipientId: string) => call(() => http.post<SignRequestDetail & { emailed: boolean }>(`/signing/requests/${id}/recipients/${recipientId}/remind`)),
+  link: (id: string, recipientId: string) => call(() => http.get<{ url: string }>(`/signing/requests/${id}/recipients/${recipientId}/link`)),
+  signedBytes: (id: string) => call(() => http.bytes(`/signing/requests/${id}/signed`)),
+  suggestions: (f: { companyId?: string | null; q?: string }) => call(() => http.get<SignSuggestion[]>(`/signing/recipient-suggestions${qs({ companyId: f.companyId ?? undefined, q: f.q })}`)),
+}
+/** signerApi — the signer's side: no login, the link secret is the credential. `session` proves the emailed code was entered. */
+const signSession = (session?: string | null) => (session ? { 'X-Sign-Session': session } : undefined)
+export const signerApi = {
+  view: (token: string, session?: string | null) => call(() => http.get<SignerView>(`/sign/${token}`, signSession(session))),
+  sendCode: (token: string) => call(() => http.post<{ ok: true }>(`/sign/${token}/code`)),
+  verifyCode: (token: string, code: string) => call(() => http.post<{ session: string }>(`/sign/${token}/verify`, { code })),
+  documentBytes: (token: string, docId: string, session?: string | null) => call(() => http.bytes(`/sign/${token}/documents/${docId}`, signSession(session))),
+  consent: (token: string, session?: string | null) => call(() => http.post<{ ok: true }>(`/sign/${token}/consent`, undefined, signSession(session))),
+  setField: (token: string, fieldId: string, value: string | null, session?: string | null) => call(() => http.put<{ id: string; filled: boolean }>(`/sign/${token}/fields/${fieldId}`, { value }, signSession(session))),
+  finish: (token: string, session?: string | null) => call(() => http.post<{ completed: boolean }>(`/sign/${token}/finish`, undefined, signSession(session))),
+  decline: (token: string, reason: string | null, session?: string | null) => call(() => http.post<{ ok: true }>(`/sign/${token}/decline`, { reason }, signSession(session))),
+  signedBytes: (token: string) => call(() => http.bytes(`/sign/${token}/signed`)),
 }

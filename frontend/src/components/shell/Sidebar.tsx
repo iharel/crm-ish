@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Bell, Building2, Calendar, LayoutDashboard, Inbox, BookOpen, Settings, Users, Plug, Kanban, Sparkles, BarChart3, CheckSquare, type LucideIcon } from 'lucide-react'
+import { Bell, Building2, Calendar, LayoutDashboard, Inbox, BookOpen, Settings, Users, Plug, Kanban, Sparkles, BarChart3, CheckSquare, FileSignature, type LucideIcon } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { Avatar, cn } from '../ui'
 import { versionApi } from '../../api'
@@ -28,6 +28,7 @@ export function Sidebar({ unreadInbox, unreadNotifications, collapsed = false, w
       { to: '/leads', label: 'Leads', icon: Kanban },
       { to: '/companies', label: 'Companies', icon: Building2 },
       { to: '/tasks', label: 'Tasks', icon: CheckSquare },
+      { to: '/documents', label: 'Documents', icon: FileSignature },
       { to: '/calendar', label: 'Calendar', icon: Calendar },
     ] },
     { label: 'Intelligence', items: [

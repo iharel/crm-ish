@@ -22,7 +22,7 @@ export default function ComposeMockup() {
                 <Button cmp="compose.ai_tone_button" size="sm" variant="ghost" icon={<Sparkles size={12} />}>Improve tone</Button>
                 <Button cmp="compose.insert_slots_button" size="sm" variant="ghost" icon={<Calendar size={12} />}>Insert times</Button>
               </div>
-              <textarea data-cmp="compose.body_textarea" className="flex-1 min-h-64 p-4 bg-transparent outline-none resize-none text-sm leading-relaxed" defaultValue={`Hi Sarah,\n\nFollowing up on our call — here are the next steps for the 3-clinic pilot:\n\n1. Legal review of the BAA (attached)\n2. IT walkthrough — Tue 14:00 or Thu 10:00 ET, or pick a slot: https://cal.com/alex/30\n3. Kick-off the week after signature\n\nBest,\nIlan`} />
+              <textarea data-cmp="compose.body_textarea" className="flex-1 min-h-64 p-4 bg-transparent outline-none resize-none text-sm leading-relaxed" defaultValue={`Hi Sarah,\n\nFollowing up on our call — here are the next steps for the 3-clinic pilot:\n\n1. Legal review of the BAA (attached)\n2. IT walkthrough — Tue 14:00 or Thu 10:00 ET, or pick a slot: https://cal.com/alex/30\n3. Kick-off the week after signature\n\nBest,\nAlex`} />
             </div>
             <footer data-cmp="compose.footer" className="flex items-center gap-2 px-4 h-14 border-t border-border bg-surface-2/50">
               <Button cmp="compose.send_button" variant="primary" icon={<Send size={13} />}>Send</Button>

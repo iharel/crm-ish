@@ -50,7 +50,7 @@ export const threads: MockThread[] = [
     id: 't1', subject: 'Re: Proposal for Northwind pilot', leadId: 'l1', unread: true, lastAt: '10:42', hasDraft: true,
     snippet: 'Thanks Alex — the pricing looks reasonable. Could you clarify the onboarding timeline and whether HIPAA...',
     messages: [
-      { id: 'm1', from: 'alex@acme-demo.example', to: 'sarah@northwind.health', direction: 'out', at: 'Yesterday 16:05', status: 'opened', body: 'Hi Sarah,\n\nAttached is the proposal for the 3-clinic pilot we discussed. Pricing is per seat with a 20% pilot discount for the first 6 months.\n\nBest,\nIlan' },
+      { id: 'm1', from: 'alex@acme-demo.example', to: 'sarah@northwind.health', direction: 'out', at: 'Yesterday 16:05', status: 'opened', body: 'Hi Sarah,\n\nAttached is the proposal for the 3-clinic pilot we discussed. Pricing is per seat with a 20% pilot discount for the first 6 months.\n\nBest,\nAlex' },
       { id: 'm2', from: 'sarah@northwind.health', to: 'alex@acme-demo.example', direction: 'in', at: 'Today 10:42', inlineImage: true, attachments: [{ id: 'a1', filename: 'clinic-floorplan.png', mime: 'image/png', size: '412 KB', image: true }, { id: 'a2', filename: 'reception-photo.jpg', mime: 'image/jpeg', size: '1.2 MB', image: true }, { id: 'a3', filename: 'Northwind-requirements.pdf', mime: 'application/pdf', size: '86 KB' }, { id: 'a4', filename: 'agent-roster.xlsx', mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', size: '24 KB' }], body: 'Thanks Alex — the pricing looks reasonable. Could you clarify the onboarding timeline and whether HIPAA compliance documentation is available before legal review?\n\nSarah' },
     ],
   },

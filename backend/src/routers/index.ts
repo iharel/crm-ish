@@ -22,6 +22,7 @@ import { calendarController } from '../controllers/calendarController.ts'
 import { miscController } from '../controllers/miscController.ts'
 import { taskController } from '../controllers/taskController.ts'
 import { attachmentController } from '../controllers/attachmentController.ts'
+import { signingController } from '../controllers/signingController.ts'
 
 const id = z.object({ id: z.string().min(1) })
 const nullableStr = z.string().nullable().optional()
@@ -40,6 +41,20 @@ publicRouter.post('/api/webhooks/gmail', wrap(miscController.gmailWebhook))
 publicRouter.get('/api/google/callback', wrap(googleController.callback))
 // Attachment bytes: authenticated by a user-bound, expiring signature in the query (see attachmentManager.signedUrl).
 publicRouter.get('/api/emails/attachments/:id', validate({ params: id, query: z.object({ exp: z.string(), sig: z.string(), u: z.string() }) }), wrap(attachmentController.serve))
+
+// ---- document signing, signer side: no login — the link secret in the path is the credential. Rate-limited per IP and per link.
+const signLimiter = rateLimit({ windowMs: 60 * 1000, keys: (req) => [{ key: `sign-ip:${req.ip}`, max: 240 }, { key: `sign-link:${String(req.params.token).slice(0, 64)}`, max: 120 }] })
+const signCodeLimiter = rateLimit({ windowMs: 15 * 60 * 1000, keys: (req) => [{ key: `sign-code:${req.ip}`, max: 30 }, { key: `sign-code-link:${String(req.params.token).slice(0, 64)}`, max: 15 }] })
+const signToken = z.object({ token: z.string().min(20).max(100) })
+publicRouter.get('/api/sign/:token', signLimiter, validate({ params: signToken }), wrap(signingController.view))
+publicRouter.post('/api/sign/:token/code', signCodeLimiter, validate({ params: signToken }), wrap(signingController.sendCode))
+publicRouter.post('/api/sign/:token/verify', signCodeLimiter, validate({ params: signToken, body: z.object({ code: z.string().min(4).max(12) }) }), wrap(signingController.verifyCode))
+publicRouter.get('/api/sign/:token/documents/:docId', signLimiter, validate({ params: signToken.extend({ docId: z.string().min(1) }) }), wrap(signingController.publicDocument))
+publicRouter.post('/api/sign/:token/consent', signLimiter, validate({ params: signToken }), wrap(signingController.consent))
+publicRouter.put('/api/sign/:token/fields/:fieldId', signLimiter, validate({ params: signToken.extend({ fieldId: z.string().min(1) }), body: z.object({ value: z.string().max(700_000).nullable() }) }), wrap(signingController.setField))
+publicRouter.post('/api/sign/:token/finish', signLimiter, validate({ params: signToken }), wrap(signingController.finish))
+publicRouter.post('/api/sign/:token/decline', signLimiter, validate({ params: signToken, body: z.object({ reason: z.string().max(500).nullable().optional() }) }), wrap(signingController.decline))
+publicRouter.get('/api/sign/:token/signed', signLimiter, validate({ params: signToken }), wrap(signingController.publicSigned))
 
 export const api = Router()
 
@@ -152,6 +167,31 @@ api.post('/tasks', validate({ body: taskBody.required({ title: true }) }), wrap(
 api.post('/tasks/suggest', validate({ body: z.object({ threadId: z.string() }) }), wrap(taskController.suggest))
 api.patch('/tasks/:id', validate({ params: id, body: taskBody }), wrap(taskController.update))
 api.delete('/tasks/:id', validate({ params: id }), wrap(taskController.remove))
+
+// ---- document signing (owner side; a request is visible to its owner and to admins)
+const signId = id.extend({ docId: z.string().min(1).optional(), rid: z.string().min(1).optional() })
+const signDays = z.number().int().min(1).max(60).nullable().optional()
+const signRequestBody = z.object({ title: z.string().min(1).max(200).optional(), message: z.string().max(4000).nullable().optional(), companyId: nullableStr, dealId: nullableStr, sequential: z.boolean().optional(), requireCode: z.boolean().optional(), remindAfterDays: signDays, remindEveryDays: signDays, remindMax: z.number().int().min(0).max(10).nullable().optional(), expiresAt: z.string().nullable().optional() })
+const signRecipient = z.object({ id: z.string().optional(), role: z.enum(['signer', 'copy']).optional(), name: z.string().min(1).max(120), email: z.string().max(200), leadId: nullableStr, userId: nullableStr })
+const signField = z.object({ documentId: z.string(), recipientId: z.string(), type: z.enum(['signature', 'initials', 'name', 'date', 'text', 'checkbox']), page: z.number().int().min(1), x: z.number(), y: z.number(), w: z.number(), h: z.number(), required: z.boolean().optional(), label: z.string().max(80).nullable().optional() })
+api.get('/signing/requests', wrap(signingController.list))
+api.get('/signing/recipient-suggestions', wrap(signingController.suggestions))
+api.post('/signing/requests', validate({ body: z.object({ title: z.string().trim().min(1).max(200), companyId: nullableStr, dealId: nullableStr, threadId: nullableStr, isTemplate: z.boolean().optional() }) }), wrap(signingController.create))
+api.get('/signing/requests/:id', validate({ params: id }), wrap(signingController.get))
+api.patch('/signing/requests/:id', validate({ params: id, body: signRequestBody }), wrap(signingController.update))
+api.delete('/signing/requests/:id', validate({ params: id }), wrap(signingController.remove))
+api.post('/signing/requests/:id/documents', validate({ params: id }), upload.array('files', 10), wrap(signingController.addDocuments))
+api.post('/signing/requests/:id/documents/reorder', validate({ params: id, body: z.object({ ids: z.array(z.string()).max(10) }) }), wrap(signingController.reorderDocuments))
+api.get('/signing/requests/:id/documents/:docId/file', validate({ params: signId }), wrap(signingController.documentFile))
+api.delete('/signing/requests/:id/documents/:docId', validate({ params: signId }), wrap(signingController.removeDocument))
+api.put('/signing/requests/:id/recipients', validate({ params: id, body: z.object({ recipients: z.array(signRecipient).max(20) }) }), wrap(signingController.setRecipients))
+api.put('/signing/requests/:id/fields', validate({ params: id, body: z.object({ fields: z.array(signField).max(500) }) }), wrap(signingController.setFields))
+api.post('/signing/requests/:id/send', validate({ params: id }), wrap(signingController.send))
+api.post('/signing/requests/:id/void', validate({ params: id, body: z.object({ reason: z.string().max(500).nullable().optional() }) }), wrap(signingController.void))
+api.post('/signing/requests/:id/duplicate', validate({ params: id, body: z.object({ asTemplate: z.boolean().optional(), title: z.string().max(200).optional(), companyId: nullableStr }) }), wrap(signingController.duplicate))
+api.post('/signing/requests/:id/recipients/:rid/remind', validate({ params: signId }), wrap(signingController.remind))
+api.get('/signing/requests/:id/recipients/:rid/link', validate({ params: signId }), wrap(signingController.recipientLink))
+api.get('/signing/requests/:id/signed', validate({ params: id }), wrap(signingController.signedFile))
 
 // ---- calendar
 api.get('/calendar/week', validate({ query: z.object({ from: z.string(), to: z.string() }) }), wrap(calendarController.week))

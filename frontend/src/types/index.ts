@@ -45,3 +45,23 @@ export interface Signature { text: string; /** Add to new emails. */ enabled: bo
 
 /** What the backend process runs (GET /api/version). */
 export interface BuildInfo { version: string; commit: string; startedAt: string }
+
+// ---- document signing
+export type SignRequestStatus = 'draft' | 'sent' | 'completed' | 'declined' | 'voided' | 'expired'
+export type SignFieldType = 'signature' | 'initials' | 'name' | 'date' | 'text' | 'checkbox'
+export type SignRecipientStatus = 'pending' | 'sent' | 'opened' | 'signed' | 'declined'
+export interface SignRequest { id: string; title: string; message: string | null; status: SignRequestStatus; isTemplate: boolean; ownerId: string; ownerName: string; companyId: string | null; companyName: string | null; dealId: string | null; threadId: string | null; sequential: boolean; requireCode: boolean; remindAfterDays: number | null; remindEveryDays: number | null; remindMax: number | null; expiresAt: string | null; voidReason: string | null; sentAt: string | null; completedAt: string | null; createdAt: string; updatedAt: string; documentCount: number; pageCount: number; signerCount: number; signedCount: number; hasSignedFile: boolean; /** True when the request belongs to someone else: status only, no way into the files. */ restricted?: boolean }
+export interface SignDocument { id: string; filename: string; pageCount: number; size: number; sha256: string; sortOrder: number }
+export interface SignRecipient { id: string; role: 'signer' | 'copy'; name: string; email: string; leadId: string | null; userId: string | null; sortOrder: number; status: SignRecipientStatus; declineReason: string | null; remindersSent: number; lastRemindedAt: string | null; signedAt: string | null }
+/** A rectangle on one page; x/y/w/h are fractions of the displayed page, origin top-left. */
+export interface SignField { id: string; documentId: string; recipientId: string; type: SignFieldType; page: number; x: number; y: number; w: number; h: number; required: boolean; label: string | null; filled: boolean }
+export interface SignEvent { id: string; type: string; recipientId: string | null; at: string; ip: string | null; text: string }
+export interface SignRequestDetail { request: SignRequest; documents: SignDocument[]; recipients: SignRecipient[]; fields: SignField[]; events: SignEvent[] }
+export interface SignRecipientInput { id?: string; role: 'signer' | 'copy'; name: string; email: string; leadId?: string | null; userId?: string | null }
+export type SignFieldInput = Omit<SignField, 'id' | 'filled'>
+export interface SignRequestInput { title?: string; message?: string | null; companyId?: string | null; sequential?: boolean; requireCode?: boolean; remindAfterDays?: number | null; remindEveryDays?: number | null; remindMax?: number | null; expiresAt?: string | null }
+export interface SignSuggestion { name: string; email: string; leadId: string | null; userId: string | null; source: 'company' | 'team' | 'contact'; detail: string | null }
+export interface SignLink { recipientId: string; name: string; url: string }
+/** What a signer sees through their private link. */
+export interface SignerField { id: string; documentId: string; type: SignFieldType; page: number; x: number; y: number; w: number; h: number; required: boolean; label: string | null; value: string | null; image: string | null }
+export interface SignerView { title: string; senderName: string; status: SignRequestStatus; expiresAt: string | null; message: string | null; needsCode: boolean; canDownload: boolean; recipient: { name: string; email: string; role: 'signer' | 'copy'; status: SignRecipientStatus; consented: boolean }; documents: { id: string; filename: string; pageCount: number }[]; fields: SignerField[]; others: { name: string; signed: boolean }[] }

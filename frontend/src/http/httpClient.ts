@@ -26,8 +26,8 @@ async function refreshToken(): Promise<string | null> {
   return refreshing
 }
 
-async function request<T>(method: Method, path: string, body?: unknown, opts: { retry?: boolean; formData?: FormData } = {}): Promise<T> {
-  const headers: Record<string, string> = {}
+async function request<T>(method: Method, path: string, body?: unknown, opts: { retry?: boolean; formData?: FormData; headers?: Record<string, string>; bytes?: boolean } = {}): Promise<T> {
+  const headers: Record<string, string> = { ...opts.headers }
   const token = storageService.getAccessToken()
   if (token) headers.Authorization = `Bearer ${token}`
   let payload: BodyInit | undefined
@@ -46,14 +46,17 @@ async function request<T>(method: Method, path: string, body?: unknown, opts: { 
     throw new HttpError(res.status, data.code ?? 'HTTP_ERROR', data.message ?? res.statusText, data.details)
   }
   if (res.status === 204) return undefined as T
+  if (opts.bytes) return (await res.arrayBuffer()) as T
   return (await res.json()) as T
 }
 
 export const http = {
-  get: <T>(path: string) => request<T>('GET', path),
-  post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
+  get: <T>(path: string, headers?: Record<string, string>) => request<T>('GET', path, undefined, { headers }),
+  post: <T>(path: string, body?: unknown, headers?: Record<string, string>) => request<T>('POST', path, body, { headers }),
   patch: <T>(path: string, body?: unknown) => request<T>('PATCH', path, body),
-  put: <T>(path: string, body?: unknown) => request<T>('PUT', path, body),
+  put: <T>(path: string, body?: unknown, headers?: Record<string, string>) => request<T>('PUT', path, body, { headers }),
+  /** Download a file's bytes (e.g. a PDF). */
+  bytes: (path: string, headers?: Record<string, string>) => request<ArrayBuffer>('GET', path, undefined, { headers, bytes: true }),
   delete: <T>(path: string) => request<T>('DELETE', path),
   upload: <T>(path: string, form: FormData) => request<T>('POST', path, undefined, { formData: form }),
   onUnauthorized(fn: () => void) { onUnauthorized.push(fn); return () => { const i = onUnauthorized.indexOf(fn); if (i >= 0) onUnauthorized.splice(i, 1) } },

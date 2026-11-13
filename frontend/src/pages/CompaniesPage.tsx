@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { safeUrl } from '../lib/safeUrl'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Plus, Sparkles, Globe, Search, ExternalLink, Trash2, Truck, Building2 } from 'lucide-react'
+import { FileSignature, Plus, Sparkles, Globe, Search, ExternalLink, Trash2, Truck, Building2 } from 'lucide-react'
 import { companiesApi } from '../api'
 import { AppShell } from '../components/shell/AppShell'
 import { CompanyLogo } from '../components/companies/CompanyLogo'
@@ -57,6 +57,7 @@ export default function CompaniesPage() {
           { id: 'open', label: 'Open', icon: <ExternalLink size={13} />, onSelect: () => nav(`/companies/${c.id}`) },
           { id: 'site', label: 'Visit website', icon: <Globe size={13} />, disabled: !safeUrl(c.website), onSelect: () => { const url = safeUrl(c.website); if (url) window.open(url, '_blank', 'noopener') } },
           { id: 'enrich', label: 'Enrich with AI', icon: <Sparkles size={13} />, onSelect: () => void enrichCompany(c) },
+          { id: 'sign', label: 'Send for signature…', icon: <FileSignature size={13} />, onSelect: () => nav(`/documents?${new URLSearchParams({ new: '1', companyId: c.id, companyName: c.name }).toString()}`) },
           { id: 'supplier', label: c.isSupplier ? 'Mark as regular company' : 'Mark as supplier', icon: c.isSupplier ? <Building2 size={13} /> : <Truck size={13} />, onSelect: () => void setSupplier(c, !c.isSupplier) },
           'separator',
           { id: 'delete', label: `Delete ${noun}`, icon: <Trash2 size={13} />, danger: true, onSelect: () => void removeCompany(c) },

@@ -8,6 +8,7 @@ import { AppShell } from '../components/shell/AppShell'
 import { PageState } from '../components/common/PageState'
 import { StatusBadge } from '../components/common/StatusBadge'
 import { TasksCard } from '../components/tasks/TasksCard'
+import { DocumentsCard } from '../components/signing/DocumentsCard'
 import { LeadFormModal } from '../components/leads/LeadFormModal'
 import { ComposeModal } from '../components/email/ComposeModal'
 import { MeetingModal } from '../components/email/MeetingModal'
@@ -122,6 +123,7 @@ export default function LeadDetailPage() {
                   ) : <p data-cmp="lead.enrichment_empty" className="text-sm text-fg-muted">Not enriched yet. Click Enrich to let AI research this lead.</p>}
                 </Card>
                 <TasksCard cmp="lead.tasks_card" leadId={lead!.id} leadName={lead!.name} companyId={lead!.companyId ?? undefined} companyName={lead!.companyName} />
+                {lead!.companyId && <DocumentsCard cmp="lead.documents_card" companyId={lead!.companyId} companyName={lead!.companyName} />}
                 <Card cmp="lead.company_card" title="Company">
                   {lead!.companyId ? <Link data-cmp="lead.company_link" to={`/companies/${lead!.companyId}`} className="flex items-center gap-3 hover:text-primary"><span data-cmp="lead.company_logo" className="h-9 w-9 rounded-lg bg-surface-3 grid place-items-center text-fg-muted"><Building2 size={16} /></span><span dir="auto" data-cmp="lead.company_name" className="font-medium">{lead!.companyName}</span></Link> : lead!.suggestedCompany ? (
                     <div data-cmp="lead.company_suggestion" className="flex flex-col gap-2">

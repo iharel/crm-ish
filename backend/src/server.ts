@@ -16,6 +16,7 @@ import { schedulerService } from './services/schedulerService.ts'
 import { emailManager } from './managers/emailManager.ts'
 import { leadStatusManager } from './managers/leadStatusManager.ts'
 import { seedIfEmpty } from './scripts/seed.ts'
+import { signingManager } from './managers/signingManager.ts'
 
 console.log(`[crm] starting — port=${CONSTANTS.PORT} db=${CONSTANTS.DB_PATH} uploads=${CONSTANTS.UPLOAD_DIR} public=${CONSTANTS.PUBLIC_URL}`)
 for (const w of insecureDefaults()) console.error(`[crm] SECURITY WARNING: ${w}`)
@@ -67,5 +68,8 @@ app.use(errorHandler)
 const server = http.createServer(app)
 socketService.init(server)
 schedulerService.startDefaults(() => emailManager.syncAll(), () => emailManager.backfillAttachmentScans())
+// Signing: expire requests past their date and send due reminders (hourly, plus once shortly after boot).
+schedulerService.every(60 * 60 * 1000, () => signingManager.tick(), 'signing')
+setTimeout(() => { signingManager.tick().catch((e) => console.warn('[scheduler:signing]', (e as Error).message)) }, 30_000)
 server.on('error', (e) => { console.error('[crm] listen failed:', e); process.exit(1) })
 server.listen(CONSTANTS.PORT, '0.0.0.0', () => { clearInterval(heartbeat); phase = 'ready'; console.log(`[crm] backend on :${CONSTANTS.PORT}`) })

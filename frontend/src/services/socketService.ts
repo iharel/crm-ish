@@ -3,7 +3,7 @@ import { io, type Socket } from 'socket.io-client'
 import { CONSTANTS } from '../constants'
 import { storageService } from './storageService'
 
-export type SocketEvent = 'email:new' | 'email:updated' | 'email:event' | 'task:updated' | 'lead:updated' | 'lead:enriched' | 'company:enriched' | 'draft:ready' | 'knowledge:status' | 'notification:new' | 'account:status' | 'thread:scanned'
+export type SocketEvent = 'email:new' | 'email:updated' | 'email:event' | 'task:updated' | 'lead:updated' | 'lead:enriched' | 'company:enriched' | 'draft:ready' | 'knowledge:status' | 'notification:new' | 'account:status' | 'thread:scanned' | 'signing:updated'
 
 let socket: Socket | null = null
 const statusListeners = new Set<(connected: boolean) => void>()

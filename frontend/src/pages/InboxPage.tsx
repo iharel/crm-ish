@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Archive, Reply, Sparkles, Send, Pencil, Link2, Eye, MousePointerClick, AlertTriangle, RefreshCw, Search, Inbox, Loader2, ArchiveRestore, Calendar, ExternalLink, Trash2, UserPlus, Building2, History, ChevronDown, ChevronRight, CheckSquare, Paperclip, ReplyAll, Truck } from 'lucide-react'
+import { FileSignature, Archive, Reply, Sparkles, Send, Pencil, Link2, Eye, MousePointerClick, AlertTriangle, RefreshCw, Search, Inbox, Loader2, ArchiveRestore, Calendar, ExternalLink, Trash2, UserPlus, Building2, History, ChevronDown, ChevronRight, CheckSquare, Paperclip, ReplyAll, Truck } from 'lucide-react'
 import { companiesApi, draftsApi, emailsApi, tasksApi } from '../api'
 import { ApiError, errorMessage } from '../api/apiError'
 import { CompanyPicker, type CompanyPick } from '../components/companies/CompanyPicker'
@@ -272,6 +272,7 @@ export default function InboxPage() {
           { id: 'archive', label: x.archived ? 'Unarchive' : 'Archive', icon: x.archived ? <ArchiveRestore size={13} /> : <Archive size={13} />, onSelect: () => void archive(x) },
           ...(x.leadId ? [] : [{ id: 'convert', label: 'Create lead from sender', icon: <UserPlus size={13} />, disabled: !x.counterpart, onSelect: () => void convertThread(x) }]),
           { id: 'task', label: 'Create task…', icon: <CheckSquare size={13} />, onSelect: () => setTaskFor(x) },
+          { id: 'sign', label: 'Send for signature…', icon: <FileSignature size={13} />, onSelect: () => nav(`/documents?${new URLSearchParams({ new: '1', threadId: x.id, ...(x.companyId ? { companyId: x.companyId, companyName: x.companyName ?? '' } : {}) }).toString()}`) },
           ...(!x.companyId && x.suggestedCompany ? [{ id: 'suggest', label: `Link to ${x.suggestedCompany.name}`, icon: <Building2 size={13} />, onSelect: () => void acceptSuggestion(x) }] : []),
           { id: 'link', label: x.companyId ? 'Move to another company…' : 'Link to company…', icon: <Building2 size={13} />, onSelect: () => { nav(`/inbox/${x.id}`); setLinking(true) } },
           ...(x.supplier ? [] : [{ id: 'supplier', label: 'Set as supplier', icon: <Truck size={13} />, disabled: !x.counterpart && !x.leadId, onSelect: () => void setSupplier(x) }]),

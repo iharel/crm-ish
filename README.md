@@ -15,6 +15,14 @@ Taken from a local instance filled with fictional demo data.
 | **Companies**<br>![Companies](docs/screenshots/companies.png) | **Suppliers** — the second tab of the Companies page<br>![Suppliers](docs/screenshots/suppliers.png) |
 | **Company page** — deal, leads, tasks, AI insights, threads<br>![Company](docs/screenshots/company.png) | **Tasks**<br>![Tasks](docs/screenshots/tasks.png) |
 
+## Document signing
+Send one or more PDFs (a contract and its appendices) for signature from the **Documents** page, a company page, or the Inbox / Companies right-click menu.
+- **Build**: upload and order the PDFs, add recipients (auto-complete from the company's contacts, teammates, or any email), and click fields onto the pages — signature, initials, name, date, text, checkbox — each assigned to a signer.
+- **Send**: optional signing order, optional emailed code before opening, reminders (first after N days, every M days, at most K times), expiry date. Each signer gets a private link; no account needed.
+- **Track**: who opened and signed, remind now, copy a person's link, void, duplicate, save as a template.
+- **Result**: one merged PDF with every field stamped and a certificate page (who, when, IP, SHA-256 of the originals).
+- This is a simple electronic signature with an audit trail, not a certificate-based digital signature.
+
 ## Layout
 ```
 frontend/   React 19 + Vite + TypeScript + Tailwind v4 (+ socket.io-client)
@@ -44,7 +52,7 @@ First run seeds an admin: `admin@looper.local` / `admin1234` (override with `SEE
 `http/httpClient` (auth header, refresh-on-401, HttpError) → `api/*` (ApiError) → pages/components. Browser APIs only via `services/` (storage, theme, socket, notifications, clipboard). Every element has a unique `data-cmp`.
 
 ## Public endpoints
-`GET /t/o/:token.gif` open pixel · `GET /t/c/:token?u=` click redirect · `POST /api/webhooks/gmail` Pub/Sub push · `GET /api/google/callback` OAuth · `GET /api/emails/attachments/:id` (user-bound signed url).
+`GET /t/o/:token.gif` open pixel · `GET /t/c/:token?u=` click redirect · `POST /api/webhooks/gmail` Pub/Sub push · `GET /api/google/callback` OAuth · `GET /api/emails/attachments/:id` (user-bound signed url) · `/api/sign/:token/*` signer endpoints (the link secret is the credential; rate-limited).
 
 ## Security notes
 - **Set your own secrets before exposing an instance**: `JWT_SECRET`, `JWT_REFRESH_SECRET`, `ENCRYPTION_KEY` (long random values) and `SEED_ADMIN_PASSWORD`. The backend logs a `SECURITY WARNING` at startup while any of them is still a default.

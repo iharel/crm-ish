@@ -9,6 +9,7 @@ import { CompanyLogo } from '../components/companies/CompanyLogo'
 import { PageState } from '../components/common/PageState'
 import { StatusBadge } from '../components/common/StatusBadge'
 import { TasksCard } from '../components/tasks/TasksCard'
+import { DocumentsCard } from '../components/signing/DocumentsCard'
 import { CompanyFormModal } from '../components/companies/CompanyFormModal'
 import { CompanySuggestionsCard } from '../components/companies/CompanySuggestionsCard'
 import { DealsCard } from '../components/deals/DealsCard'
@@ -63,6 +64,7 @@ export default function CompanyDetailPage() {
                 </ul>
               </Card>
               <TasksCard cmp="company.tasks_card" companyId={data.company.id} companyName={data.company.name} />
+              <DocumentsCard cmp="company.documents_card" companyId={data.company.id} companyName={data.company.name} />
               <Card cmp="company.enrichment_card" title={<span className="inline-flex items-center gap-1.5"><Sparkles size={14} className="text-accent" /> AI insights</span>}>
                 {c!.enrichment ? (
                   <>

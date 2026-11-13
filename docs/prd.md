@@ -143,3 +143,13 @@ One local-first workspace where the team tracks leads/companies, reads and answe
 - The dialog uses an auto-complete company picker: typing filters existing companies by name or domain; a name matching none is offered as "Create …". A typed name equal to an existing company resolves to it.
 - For an unlinked thread the name is pre-filled from the sender's email domain (not for free-mail senders).
 - Linking to a new name is one server call (`POST /emails/threads/:id/link { companyName }`): exactly one company is created, with the sender's domain when it is not free-mail and not owned by another company. Previously the named company and a second domain-derived company were both created.
+
+## Document signing (2026-11-13)
+- Send 1–10 PDFs as one signing request; signers get one merged, signed PDF with a certificate page.
+- Fields: signature (draw or type), initials, full name, date signed (automatic), text, checkbox; each assigned to one signer, required or optional.
+- Recipients: signers and copy recipients; auto-complete from the company's contacts, team members and other contacts, or any typed email. Optional signing order.
+- Each recipient has a private link (no login). Optional 6-digit emailed code before the document opens. Consent to sign electronically is recorded.
+- Reminders configured at send (first after N days, every M days, at most K), manual "Remind", optional expiry date.
+- Decline (with reason), void, duplicate, templates. A sent request cannot be edited.
+- Full activity record with time, IP and browser; SHA-256 of each original file and of the signed result.
+- Visible to the sender and admins; other users see status only on the company page.

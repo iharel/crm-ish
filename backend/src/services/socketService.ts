@@ -6,7 +6,7 @@ import { verifyAccessToken } from '../middleware/auth.ts'
 
 export type SocketEvent =
   | 'email:new' | 'email:updated' | 'email:event' | 'task:updated' | 'lead:updated' | 'lead:enriched' | 'company:enriched'
-  | 'draft:ready' | 'knowledge:status' | 'notification:new' | 'account:status' | 'thread:scanned'
+  | 'draft:ready' | 'knowledge:status' | 'notification:new' | 'account:status' | 'thread:scanned' | 'signing:updated'
 
 let io: Server | null = null
 
