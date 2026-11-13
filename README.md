@@ -70,3 +70,6 @@ Mockups: `/design/index` · Design system: `/design/design-system` · Guide: `/d
 - `GET /api/emails/threads?before=<iso>&limit=<n>` — cursor pagination (default 40, max 100).
 - `DELETE /api/emails/threads/:id` — remove a thread from the CRM (cascades messages, drafts, events).
 - `POST /api/emails/threads/:id/convert` — create a lead from the thread's counterpart and link the thread.
+
+## License
+MIT — see [LICENSE](LICENSE).
